@@ -1,4 +1,4 @@
-YUI().use(["node", "array-extras"], function (Y) {
+YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (Y) {
     var map,
         lastListEntry = null,
         lastMarker = null,
@@ -43,6 +43,7 @@ YUI().use(["node", "array-extras"], function (Y) {
 
     function handleHighlighting(marker, listEntry) {
         return function () {
+            listEntry.scrollIntoView({anim: false});
             resetHighlighting();
             highlight(marker, listEntry);
             rememberActuallyHighlight(marker, listEntry);
@@ -88,7 +89,7 @@ YUI().use(["node", "array-extras"], function (Y) {
 
 
     google.maps.event.addListener(markerManager, 'loaded', function () {
-        markerManager.addMarkers(getMarkers(), 1);
+        markerManager.addMarkers(getMarkers(), 13);
         markerManager.refresh();
     });
 
