@@ -327,10 +327,6 @@ html, body {
     box-sizing: border-box;
 }
 
-#resultList li a:hover {
-    background-color: #ddd;
-}
-
 #resultList .highlight {
     background-color: #ddd;
     color: #ff7500;
