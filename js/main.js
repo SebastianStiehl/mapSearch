@@ -81,10 +81,7 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
                 markerPosition;
 
             markerPosition = link.getData("marker").getPosition();
-
-            if (!map.getBounds().contains(markerPosition)) {
-                map.setCenter(markerPosition);
-            }
+            map.panTo(markerPosition);
 
             resetHighlighting();
             highlight(link);
