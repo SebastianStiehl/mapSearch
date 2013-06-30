@@ -314,7 +314,7 @@ html, body {
     width: 30%;
     height: 100%;
     list-style: none;
-    overflow: auto;
+    overflow: scroll;
     position: relative;
 }
 
@@ -323,7 +323,6 @@ html, body {
     margin: 10px;
     border: 1px solid #666;
     cursor: pointer;
-    overflow: hidden;
 }
 
 #resultList .highlight {

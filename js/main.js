@@ -40,12 +40,17 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
     }
 
     function handleHighlighting(marker, listEntry) {
-        return function (event) {
-            listEntry.scrollIntoView({anim: false});
+        return function () {
+            var markerPosition = marker.getPosition();
+
+            if (!map.getBounds().contains(markerPosition)) {
+                map.setCenter(markerPosition);
+            }
+
+            listEntry.scrollIntoView({anim: true});
             resetHighlighting();
             highlight(marker, listEntry);
             rememberActuallyHighlight(marker, listEntry);
-            event.preventDefault();
         };
     }
 
