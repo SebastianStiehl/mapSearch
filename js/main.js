@@ -1,5 +1,6 @@
 YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (Y) {
     var map,
+        markerManager,
         lastListEntry = null,
         lastMarker = null,
         resultList = Y.one("#resultList");
@@ -15,7 +16,7 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
     }
 
     function getId(listEntry) {
-        var id = listEntry.get("id");
+        var id = listEntry.getData("id");
         return parseInt(id, 10);
     }
 
@@ -29,35 +30,30 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
         }
     }
 
-    function highlight(marker, listEntry) {
-        marker.setIcon("img/houseL.png");
+    function highlight(listEntry) {
+        listEntry.getData("marker").setIcon("img/houseL.png");
         listEntry.addClass("highlight");
     }
 
-    function rememberActuallyHighlight(marker, listEntry) {
-        lastMarker = marker;
+    function rememberActuallyHighlight(listEntry) {
+        lastMarker = listEntry.getData("marker");
         lastListEntry = listEntry;
     }
 
-    function handleHighlighting(marker, listEntry) {
+    function handleHighlighting(entry) {
         return function () {
-            var markerPosition = marker.getPosition();
-
-            if (!map.getBounds().contains(markerPosition)) {
-                map.setCenter(markerPosition);
-            }
-
-            listEntry.scrollIntoView({anim: true});
+            entry.scrollIntoView({anim: true});
             resetHighlighting();
-            highlight(marker, listEntry);
-            rememberActuallyHighlight(marker, listEntry);
+            highlight(entry);
+            rememberActuallyHighlight(entry);
         };
     }
 
-    function getMarkers() {
-        var batch = [], modelEntry;
+    function createMarkers() {
+        var batch = [], modelEntry, listEntries;
 
-        resultList.all("> li").each(function (listEntry) {
+        listEntries = resultList.all("li > a");
+        listEntries.each(function (listEntry) {
             var marker;
 
             modelEntry = getEntryFrom(window.model, getId(listEntry));
@@ -69,8 +65,8 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
                     title: modelEntry.id.toString()
                 });
 
-                google.maps.event.addListener(marker, "click", handleHighlighting(marker, listEntry));
-                listEntry.on("click", handleHighlighting(marker, listEntry));
+                listEntry.setData("marker", marker);
+                google.maps.event.addListener(marker, "click", handleHighlighting(listEntry));
 
                 batch.push(marker);
             }
@@ -79,22 +75,47 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
         return batch;
     }
 
+    function attachListener() {
+        resultList.delegate("click", function (event) {
+            var link = event.currentTarget,
+                markerPosition;
 
-    map = new google.maps.Map(Y.one("#map").getDOMNode(), {
-        zoom: 15,
-        center: new google.maps.LatLng(52.524220046211134, 13.411027828464853),
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.SMALL
-        }
-    });
+            markerPosition = link.getData("marker").getPosition();
 
-    var markerManager = new MarkerManager(map);
+            if (!map.getBounds().contains(markerPosition)) {
+                map.setCenter(markerPosition);
+            }
+
+            resetHighlighting();
+            highlight(link);
+            rememberActuallyHighlight(link);
+
+            event.preventDefault();
+        }, "a");
+    }
 
 
-    google.maps.event.addListener(markerManager, 'loaded', function () {
-        markerManager.addMarkers(getMarkers(), 13);
-        markerManager.refresh();
-    });
+    function createMap() {
+        map = new google.maps.Map(Y.one("#map").getDOMNode(), {
+            zoom: 15,
+            center: new google.maps.LatLng(52.524220046211134, 13.411027828464853),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.SMALL
+            }
+        });
+    }
 
+    function createMarkerManager(markers) {
+        markerManager = new MarkerManager(map);
+        google.maps.event.addListener(markerManager, 'loaded', function () {
+            markerManager.addMarkers(markers, 12);
+            markerManager.refresh();
+        });
+    }
+
+
+    attachListener();
+    createMap();
+    createMarkerManager(createMarkers());
 });
