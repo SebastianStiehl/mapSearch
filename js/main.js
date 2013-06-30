@@ -25,15 +25,13 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
         }
 
         if (lastListEntry) {
-            lastListEntry.setStyle("border-color", "black");
-            lastListEntry.setStyle("color", "black");
+            lastListEntry.removeClass("highlight");
         }
     }
 
     function highlight(marker, listEntry) {
         marker.setIcon("img/houseL.png");
-        listEntry.setStyle("border-color", "red");
-        listEntry.setStyle("color", "red");
+        listEntry.addClass("highlight");
     }
 
     function rememberActuallyHighlight(marker, listEntry) {
@@ -42,11 +40,12 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
     }
 
     function handleHighlighting(marker, listEntry) {
-        return function () {
+        return function (event) {
             listEntry.scrollIntoView({anim: false});
             resetHighlighting();
             highlight(marker, listEntry);
             rememberActuallyHighlight(marker, listEntry);
+            event.preventDefault();
         };
     }
 
@@ -65,7 +64,7 @@ YUI().use(["node", "array-extras", "gallery-scrollintoview", "anim"], function (
                     title: modelEntry.id.toString()
                 });
 
-                google.maps.event.addListener(marker, 'click', handleHighlighting(marker, listEntry));
+                google.maps.event.addListener(marker, "click", handleHighlighting(marker, listEntry));
                 listEntry.on("click", handleHighlighting(marker, listEntry));
 
                 batch.push(marker);
