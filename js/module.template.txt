@@ -1,0 +1,9 @@
+YUI.add("is24-moduleName", function (Y) {
+    "use strict";
+
+    Y.namespace("is24.search");
+    Y.is24.moduleName = function (callback) {
+
+    };
+
+}, '0.0.1', { requires: [] });
