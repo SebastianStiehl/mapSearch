@@ -6,7 +6,7 @@ YUI.add("is24-highlight", function (Y) {
 
     function reset() {
         if (lastMarker) {
-            lastMarker.setIcon("img/house.png");
+            lastMarker.setIcon("img/marker.png");
         }
 
         if (lastListEntry) {
@@ -17,8 +17,11 @@ YUI.add("is24-highlight", function (Y) {
     Y.namespace("is24.search");
     Y.is24.highlight = {
         reset: reset,
-        marker: function (marker) {
-            marker.setIcon("img/houseL.png");
+        marker: function (marker, remember) {
+            var icon = (remember ? "img/marker-hover-remembered.png" : "img/marker-hover.png");
+
+
+            marker.setIcon(icon);
             lastMarker = marker;
         },
         listing: function (listEntry) {
@@ -27,4 +30,4 @@ YUI.add("is24-highlight", function (Y) {
         }
     };
 
-}, '0.0.1', { requires: [] });
+}, '0.0.1');

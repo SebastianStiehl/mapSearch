@@ -6,7 +6,7 @@ YUI.add("is24-markers", function (Y) {
         map;
 
     function createIcon() {
-        return new google.maps.MarkerImage('img/house.png');
+        return new google.maps.MarkerImage('img/marker.png');
     }
 
     function handleHighlighting(marker) {
@@ -14,22 +14,22 @@ YUI.add("is24-markers", function (Y) {
             Y.is24.doubleClick("is24-markers", marker.realEstateId);
             lastRealEstateId = marker.realEstateId;
             Y.is24.highlight.reset();
-            Y.is24.highlight.marker(marker);
-            Y.fire('highlight:list', marker.realEstateId);
+            Y.fire('highlight:marker', marker.realEstateId);
+            Y.is24.highlight.marker(marker, false);
         };
     }
 
     function attachListener() {
-        Y.on("highlight:marker", function (realEstateIdString) {
+        Y.on("highlight:list", function (data) {
             var marker, 
-                realEstateId = parseInt(realEstateIdString, 10);
+                realEstateId = parseInt(data.id, 10);
             
             marker = Y.Array.find(markers, function (m) {
                 return m.realEstateId === realEstateId;
             });
             
             if (marker) {
-                Y.is24.highlight.marker(marker);
+                Y.is24.highlight.marker(marker, data.remember);
                 map.panTo(marker.position);
             }
         });
@@ -62,4 +62,4 @@ YUI.add("is24-markers", function (Y) {
         return markers;
     }
 
-}, '0.0.1', { requires: ["array-extras", "event-custom", "is24-highlight", , "is24-doubleClick"]});
+}, '0.0.1', {requires: ["array-extras", "event-custom", "is24-highlight", "is24-doubleClick"]});

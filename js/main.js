@@ -1,8 +1,7 @@
 var IS24 = {};
 
 YUI().use([
-    "node", "array-extras", "gallery-scrollintoview", "anim", 
-    "is24-search", "is24-list", "is24-markers"
+    "node", "is24-search", "is24-list", "is24-markers", "is24-remember"
 ], function (Y) {
     var map,
         centerPoint = new google.maps.LatLng(52.524220046211134, 13.411027828464853),
@@ -34,6 +33,7 @@ YUI().use([
 
         createMap();
         Y.is24.list(entries, resultList, map);
+        Y.is24.remember.init();
         createMarkerManager(Y.is24.markers(entries, map));
     });
 

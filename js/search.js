@@ -13,4 +13,4 @@ YUI.add("is24-search", function (Y) {
         Y.jsonp(serviceUrl);
     };
 
-}, '0.0.1', { requires: ['jsonp', 'jsonp-url'] });
+}, '0.0.1', { requires: ["jsonp", "jsonp-url"] });

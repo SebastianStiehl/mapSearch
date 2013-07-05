@@ -31,16 +31,41 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 
     <script src="js/vendor/markerManager.js"></script>
-    <script src="js/plugins.js"></script>
     <script src="js/search.js"></script>
     <script src="js/list.js"></script>
     <script src="js/markers.js"></script>
     <script src="js/highlight.js"></script>
     <script src="js/doubleClick.js"></script>
-    
+    <script src="js/remember.js"></script>
+
     <script src="js/main.js"></script>
 
-    <ul id="resultList"></ul>
+    <ul id="resultList">
+        <script type="text/template" id="resultListTemplate">
+            <li>
+                <a href="#" data-id="<%=this.realEstateId%>">
+                    <img class="picture" src="<%=this['resultlist.realEstate'].titlePicture.urls[0].url[0]['@href']%>">
+                    <ul class="criteria">
+                        <li class="heading"><%=this['resultlist.realEstate'].title%></li>
+                        <li class="address"><%=this['resultlist.realEstate'].address.street%> <%=this['resultlist.realEstate'].address.houseNumber%> <%=this['resultlist.realEstate'].address.quarter%> <%=this['resultlist.realEstate'].address.city%></li>
+                        <li class="price">
+                            <div class="label">Kaltmiete</div>
+                            <div><%=this['resultlist.realEstate'].price.value%> €</div>
+                        </li>
+                        <li>
+                            <div class="label">Zimmer</div>
+                            <div><%=this['resultlist.realEstate'].numberOfRooms%></div>
+                        </li>
+                        <li>
+                            <div class="label">Wohnfläche</div>
+                            <div><%=this['resultlist.realEstate'].livingSpace%></div>
+                        </li>
+                    </ul>
+                    <div class="remember"></div>
+                </a>
+            </li>
+        </script>
+    </ul>
     <div id="map"></div>
 
 </body>
