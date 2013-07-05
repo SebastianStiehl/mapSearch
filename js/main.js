@@ -22,7 +22,7 @@ YUI().use([
     function createMarkerManager(markers) {
         markerManager = new MarkerManager(map);
         google.maps.event.addListener(markerManager, 'loaded', function () {
-            markerManager.addMarkers(markers, 12);
+            markerManager.addMarkers(markers, 14);
             markerManager.refresh();
         });
     }
