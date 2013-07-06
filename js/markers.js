@@ -14,8 +14,8 @@ YUI.add("is24-markers", function (Y) {
             lastRealEstateId = marker.realEstateId;
             Y.is24.doubleClick("is24-markers", lastRealEstateId);
             Y.is24.highlight.reset();
-            Y.fire('highlight:marker', lastRealEstateId);
             Y.is24.highlight.marker(marker);
+            Y.fire('highlight:marker', lastRealEstateId);
         };
     }
 
@@ -39,6 +39,20 @@ YUI.add("is24-markers", function (Y) {
         });
     }
 
+    function createMarker(coordinates, modelEntry) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(coordinates.latitude, coordinates.longitude),
+            icon: createIcon(modelEntry.realEstateId),
+            title: modelEntry["resultlist.realEstate"].title,
+            realEstateId: modelEntry.realEstateId
+        });
+
+        Y.is24.highlight.markerState(marker);
+        google.maps.event.addListener(marker, "click", handleHighlighting(marker));
+
+        return marker;
+    }
+
     Y.namespace("is24.search");
     Y.is24.markers = function (model) {
         messageBox = Y.one(".message");
@@ -48,21 +62,9 @@ YUI.add("is24-markers", function (Y) {
         });
 
         Y.Array.each(model, function (modelEntry) {
-            var marker, coordinates;
-
-            coordinates = modelEntry["resultlist.realEstate"].address.wgs84Coordinate;
+            var coordinates = modelEntry["resultlist.realEstate"].address.wgs84Coordinate;
             if (coordinates) {
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(coordinates.latitude, coordinates.longitude),
-                    icon: createIcon(modelEntry.realEstateId),
-                    title: modelEntry["resultlist.realEstate"].title,
-                    realEstateId: modelEntry.realEstateId
-                });
-
-                Y.is24.highlight.markerState(marker);
-                google.maps.event.addListener(marker, "click", handleHighlighting(marker));
-    
-                markers.push(marker);
+                markers.push(createMarker(coordinates, modelEntry));
             }
         });
 
@@ -71,4 +73,4 @@ YUI.add("is24-markers", function (Y) {
         return markers;
     }
 
-}, '0.0.1', {requires: ["array-extras", "event-custom", "is24-highlight", "is24-doubleClick", "is24-map", "is24-state"]});
+}, '0.0.1', {requires: ["array-extras", "event-custom", "is24-highlight", "is24-doubleClick", "is24-map"]});
