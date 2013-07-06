@@ -2,6 +2,7 @@ YUI.add("is24-markers", function (Y) {
     "use strict";
 
     var markers = [],
+        messageBox,
         lastRealEstateId;
 
     function createIcon() {
@@ -26,16 +27,25 @@ YUI.add("is24-markers", function (Y) {
             marker = Y.Array.find(markers, function (m) {
                 return m.realEstateId === realEstateId;
             });
-            
+
             if (marker) {
+                messageBox.hide();
                 Y.is24.highlight.marker(marker, data.remember);
                 Y.is24.map.panTo(marker.position);
+            } else {
+                messageBox.show();
             }
         });
     }
 
     Y.namespace("is24.search");
     Y.is24.markers = function (model) {
+        messageBox = Y.one(".message");
+
+        messageBox.on("click", function () {
+            this.hide();
+        });
+
         Y.Array.each(model, function (modelEntry) {
             var marker, coordinates;
 

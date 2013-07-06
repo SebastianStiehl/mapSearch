@@ -53,7 +53,12 @@
                     <% } %>
                     <ul class="criteria">
                         <li class="heading"><%=this['resultlist.realEstate'].title%></li>
-                        <li class="address"><%=this['resultlist.realEstate'].address.street%> <%=this['resultlist.realEstate'].address.houseNumber%> <%=this['resultlist.realEstate'].address.quarter%> <%=this['resultlist.realEstate'].address.city%></li>
+                        <li class="address">
+                            <%=this['resultlist.realEstate'].address.street%>
+                            <%=this['resultlist.realEstate'].address.houseNumber%>
+                            <%=this['resultlist.realEstate'].address.quarter%>
+                            <%=this['resultlist.realEstate'].address.city%>
+                        </li>
                         <li class="price">
                             <div class="label">Kaltmiete</div>
                             <div><%=this['resultlist.realEstate'].price.value%> €</div>
@@ -72,7 +77,9 @@
             </li>
         </script>
     </ul>
-    <div id="map"></div>
-
+    <div class="mapContainer">
+        <div id="map"></div>
+        <div class="message" style="display: none;">Die vollständige Adresse der Immobilie erhalten Sie vom Anbieter.</div>
+    </div>
 </body>
 </html>
