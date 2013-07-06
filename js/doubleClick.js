@@ -4,11 +4,12 @@ YUI.add("is24-doubleClick", function (Y) {
     var state = {};
 
     Y.namespace("is24.search");
-    Y.is24.doubleClick = function (name, lastRealEstateId) {
-        if (state[name] === lastRealEstateId) {
-            window.location = "http://www.immobilienscout24.de/expose/" + lastRealEstateId;
+    Y.is24.doubleClick = function (name, realEstateId) {
+        if (state[name] === realEstateId) {
+            Y.is24.state.add("seen", realEstateId);
+            window.location = "http://www.immobilienscout24.de/expose/" + realEstateId;
         } else {
-            state[name] = lastRealEstateId;
+            state[name] = realEstateId;
         }
     };
 

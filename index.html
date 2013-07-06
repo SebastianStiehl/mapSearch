@@ -36,7 +36,7 @@
     <script src="js/markers.js"></script>
     <script src="js/highlight.js"></script>
     <script src="js/doubleClick.js"></script>
-    <script src="js/remember.js"></script>
+    <script src="js/state.js"></script>
     <script src="js/map.js"></script>
     <script src="js/markerManager.js"></script>
 
@@ -72,7 +72,7 @@
                             <div><%=this['resultlist.realEstate'].livingSpace%></div>
                         </li>
                     </ul>
-                    <div class="remember"></div>
+                    <div class="remember<% if (this.remembered) {%> remembered<%}%>"></div>
                 </a>
             </li>
         </script>

@@ -12,23 +12,25 @@ YUI.add("is24-list", function (Y) {
                 realEstateId;
 
             realEstateId =  link.getData("id");
+            realEstateId =  parseInt(realEstateId, 10);
 
             Y.is24.highlight.reset();
 
             if (target.hasClass("remember")) {
                 if (!target.hasClass("remembered")) {
                     target.addClass("remembered");
-                    Y.is24.remember.id(realEstateId);
+                    Y.is24.state.add("remembered", realEstateId);
                     remember = true;
                 } else {
                     target.removeClass("remembered");
+                    Y.is24.state.remove("remembered", realEstateId);
                 }
             } else {
                 Y.is24.doubleClick("is24-list", realEstateId);
             }
 
             Y.is24.highlight.listing(link);
-            Y.fire("highlight:list", {id: realEstateId, remember: remember});
+            Y.fire("highlight:list", realEstateId);
 
             event.preventDefault();
         }, "a");
@@ -42,12 +44,20 @@ YUI.add("is24-list", function (Y) {
             }
         });
     }
-    
+
+    function setRememberedState(entryModel, rememberedIds) {
+        entryModel.remembered = (rememberedIds.indexOf(entryModel.realEstateId) !== -1);
+    }
+
     function createHtml(entries) {
-        var html = "",
+        var rememberedIds,
+            html = "",
             listEntry = Y.Template.Micro.compile(resultListTemplate);
 
+        rememberedIds = Y.is24.state.get("remembered") || [];
+
         Y.Array.each(entries, function (entryModel) {
+            setRememberedState(entryModel, rememberedIds);
             html += listEntry(entryModel);
         });
         return html;
@@ -62,4 +72,4 @@ YUI.add("is24-list", function (Y) {
         attachListener();
     };
 
-}, '0.0.1', { requires: ["node", "array-extras", "is24-highlight", "is24-doubleClick", "event-custom", "template-micro", "gallery-scrollintoview", "is24-remember"]});
+}, '0.0.1', { requires: ["node", "array-extras", "is24-highlight", "is24-doubleClick", "event-custom", "template-micro", "gallery-scrollintoview", "is24-state"]});

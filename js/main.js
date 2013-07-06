@@ -1,7 +1,7 @@
 var IS24 = {};
 
 YUI().use([
-    "is24-search", "is24-list", "is24-markers", "is24-remember", "is24-map", "is24-markerManager"
+    "is24-search", "is24-list", "is24-markers", "is24-map", "is24-markerManager"
 ], function (Y) {
 
     Y.is24.search(function (model) {
@@ -15,7 +15,6 @@ YUI().use([
         Y.is24.list(entries);
         Y.is24.map.create(entries);
         Y.is24.markerManager.create(Y.is24.markers(entries));
-        Y.is24.remember.init();
     });
 
 });
