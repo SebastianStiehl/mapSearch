@@ -37,6 +37,8 @@
     <script src="js/highlight.js"></script>
     <script src="js/doubleClick.js"></script>
     <script src="js/remember.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/markerManager.js"></script>
 
     <script src="js/main.js"></script>
 
@@ -44,7 +46,11 @@
         <script type="text/template" id="resultListTemplate">
             <li>
                 <a href="#" data-id="<%=this.realEstateId%>">
-                    <img class="picture" src="<%=this['resultlist.realEstate'].titlePicture.urls[0].url[0]['@href']%>">
+                    <% if (this['resultlist.realEstate'].titlePicture) { %>
+                        <img class="picture" src="<%=this['resultlist.realEstate'].titlePicture.urls[0].url[0]['@href']%>">
+                    <% } else { %>
+                        <img class="picture" src="img/empty.png">
+                    <% } %>
                     <ul class="criteria">
                         <li class="heading"><%=this['resultlist.realEstate'].title%></li>
                         <li class="address"><%=this['resultlist.realEstate'].address.street%> <%=this['resultlist.realEstate'].address.houseNumber%> <%=this['resultlist.realEstate'].address.quarter%> <%=this['resultlist.realEstate'].address.city%></li>

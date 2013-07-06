@@ -1,40 +1,20 @@
 var IS24 = {};
 
 YUI().use([
-    "node", "is24-search", "is24-list", "is24-markers", "is24-remember"
+    "is24-search", "is24-list", "is24-markers", "is24-remember", "is24-map", "is24-markerManager"
 ], function (Y) {
-    var map,
-        centerPoint = new google.maps.LatLng(52.524220046211134, 13.411027828464853),
-        markerManager,
-        resultList = Y.one("#resultList");
-
-    function createMap() {
-        map = new google.maps.Map(Y.one("#map").getDOMNode(), {
-            zoom: 15,
-            center: centerPoint,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            zoomControlOptions: {
-                style: google.maps.ZoomControlStyle.SMALL
-            }
-        });
-    }
-
-    function createMarkerManager(markers) {
-        markerManager = new MarkerManager(map);
-        google.maps.event.addListener(markerManager, 'loaded', function () {
-            markerManager.addMarkers(markers, 14);
-            markerManager.refresh();
-        });
-    }
-
-
     Y.is24.search(function (model) {
         var entries = model["resultlist.resultlist"].resultlistEntries[0].resultlistEntry;
 
-        createMap();
-        Y.is24.list(entries, resultList, map);
+        //the api returns a single object instead of an array if only there is only one hit. damn :*( fufufufu
+        if (!entries.length && entries.realEstateId) {
+            entries = [entries];
+        }
+
+        Y.is24.list(entries);
+        Y.is24.map.create(entries);
+        Y.is24.markerManager.create(Y.is24.markers(entries));
         Y.is24.remember.init();
-        createMarkerManager(Y.is24.markers(entries, map));
     });
 
 });

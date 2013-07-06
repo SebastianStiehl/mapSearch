@@ -1,7 +1,7 @@
 YUI.add("is24-search", function (Y) {
     "use strict";
 
-    var dataCallback, serviceUrl = "data.js?callback=IS24.handleData";
+    var dataCallback, serviceUrl = "search.php?callback=IS24.handleData";
     
     IS24.handleData = function (data) {
         dataCallback(data);

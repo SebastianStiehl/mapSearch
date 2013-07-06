@@ -2,8 +2,7 @@ YUI.add("is24-markers", function (Y) {
     "use strict";
 
     var markers = [],
-        lastRealEstateId,
-        map;
+        lastRealEstateId;
 
     function createIcon() {
         return new google.maps.MarkerImage('img/marker.png');
@@ -30,15 +29,13 @@ YUI.add("is24-markers", function (Y) {
             
             if (marker) {
                 Y.is24.highlight.marker(marker, data.remember);
-                map.panTo(marker.position);
+                Y.is24.map.panTo(marker.position);
             }
         });
     }
 
     Y.namespace("is24.search");
-    Y.is24.markers = function (model, gmap) {
-        map = gmap;
-
+    Y.is24.markers = function (model) {
         Y.Array.each(model, function (modelEntry) {
             var marker, coordinates;
 
@@ -62,4 +59,4 @@ YUI.add("is24-markers", function (Y) {
         return markers;
     }
 
-}, '0.0.1', {requires: ["array-extras", "event-custom", "is24-highlight", "is24-doubleClick"]});
+}, '0.0.1', {requires: ["array-extras", "event-custom", "is24-highlight", "is24-doubleClick", "is24-map"]});

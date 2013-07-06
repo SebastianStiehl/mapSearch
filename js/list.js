@@ -2,8 +2,7 @@ YUI.add("is24-list", function (Y) {
     "use strict";
     
     var containerNode,
-        resultListTemplate,
-        map;
+        resultListTemplate;
 
     function attachListener() {
         containerNode.delegate("click", function (event) {
@@ -43,7 +42,6 @@ YUI.add("is24-list", function (Y) {
             }
         });
     }
-
     
     function createHtml(entries) {
         var html = "",
@@ -56,12 +54,12 @@ YUI.add("is24-list", function (Y) {
     }
 
     Y.namespace("is24.search");
-    Y.is24.list = function (entries, container, gmap) {
+    Y.is24.list = function (entries) {
+        containerNode = Y.one("#resultList");
         resultListTemplate = Y.one("#resultListTemplate").getHTML();
-        map = gmap;
-        containerNode = container;
+
         containerNode.append(createHtml(entries));
         attachListener();
     };
 
-}, '0.0.1', { requires: ["array-extras", "is24-highlight", "is24-doubleClick", "event-custom", "template-micro", "gallery-scrollintoview", "is24-remember"]});
+}, '0.0.1', { requires: ["node", "array-extras", "is24-highlight", "is24-doubleClick", "event-custom", "template-micro", "gallery-scrollintoview", "is24-remember"]});

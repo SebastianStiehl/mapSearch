@@ -336,6 +336,7 @@ ul {
 #resultList li .picture {
     float: left;
     border: 1px solid #ccc;
+    max-width: 118px;
 }
 #resultList li a {
     font-size: 0.9em;
